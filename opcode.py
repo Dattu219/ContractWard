@@ -1,4 +1,4 @@
-import pandas as pd
+import csv
 import sys
 
 opcodes = {
@@ -196,10 +196,16 @@ def opcode(hexcode):
     return decode([hexcode[i:i+2] for i in range(2, len(hexcode), 2)], mode)
 
 
-df = pd.read_csv('ContractInfo.csv')
-df = df.loc[:, ['address','creationCode']]
-# df['opcode'] = df['creationCode'].apply(opcode)
-df.head()
-# del df['address']
-# del df['creationCode']
-df.to_csv('OpcodeInfo.csv')
+csv.field_size_limit(10000000)
+with open('OpcodeInfo.csv', 'r') as f1, open('Opcode.csv', 'w') as f2:
+    reader = csv.reader(f1)
+    writer = csv.writer(f2)
+    try:
+        for r in reader:
+            mode = 'int:hex' if len(sys.argv) < 2 else sys.argv[1]
+            hexcode = r[1]
+            opcode = decode([hexcode[i:i+2] for i in range(2, len(hexcode), 2)], mode)
+            r.append(opcode)
+            writer.writerow((r[0],r[2]))
+    except:
+        pass
