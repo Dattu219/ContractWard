@@ -145,7 +145,7 @@ opcodes_dic = {
 
 
 class BigramVector:
-    def __init__(self, text: str):
+    def __init__(self, text):
         self.text = text
 
     @staticmethod
@@ -165,7 +165,8 @@ class BigramVector:
         return " ".join(sorted_feature_vector)
 
 
-with open('SmartContract','r') as f1, open('SmartContractDataset','w') as f2:
+csv.field_size_limit(10000000)
+with open('SmartContract.csv','r') as f1, open('SmartContractDataset.csv','w') as f2:
     reader = csv.reader(f1)
     writer = csv.writer(f2)
     flag=True
